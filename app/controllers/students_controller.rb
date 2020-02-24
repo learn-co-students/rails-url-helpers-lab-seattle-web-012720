@@ -8,23 +8,22 @@ class StudentsController < ApplicationController
 
   def show
     @student = Student.find_by_id(params[:id])
-    if @student.active == "t"
+    if @student.active == true
       @status = 'active' 
-    elsif @student.active == "f" 
+    elsif @student.active == false 
       @status = 'inactive'
     end
   end
 
   def activate
     @student = Student.find(params[:id])
-
-    if @student.active
-       @status = false
-     else
-       @status = true
+    if @student.active == true
+       @student.active = false
+       @student.save
+    else
+       @student.active = true
+       @student.save
     end
-    #@student.active = @status
-    @student.update(params[:id], active: @status)
     redirect_to student_path(@student)
   end
 
